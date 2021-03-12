@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('guest')->post('login', [UserController::class, 'login']);
+Route::middleware('guest')->post('registration', [UserController::class, 'registration']);
+
+Route::middleware('auth')->get('temp', [UserController::class, 'temp']);
+Route::middleware('auth')->get('logout', [UserController::class, 'logout']);
+Route::middleware('auth')->get('tasks', [TaskController::class, 'show']);
+Route::middleware('auth')->get('admin/dashboard', [TaskController::class, 'show']);
+Route::middleware('auth')->get('admin/users', [TaskController::class, 'users']);
+
