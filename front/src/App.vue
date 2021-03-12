@@ -1,7 +1,11 @@
 <template>
+<!--  // TEMP TO NAVIGATE FOR MY SELF / MUST BE DELETED-->
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/">Login</router-link> |
+    <router-link to="/registration">Registration</router-link> |
+    <router-link to="/tasks">User Tasks</router-link> |
+    <router-link to="/admin/">Dashboard (admin)</router-link> |
+    <router-link to="/admin/users">Users (admin)</router-link> |
   </div>
   <router-view/>
 </template>
