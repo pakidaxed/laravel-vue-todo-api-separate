@@ -21,7 +21,7 @@ Route::middleware('auth')->get('/user', function (Request $request) {
 });
 
 Route::middleware('guest')->post('login', [UserController::class, 'login']);
-Route::middleware('guest')->post('registration', [UserController::class, 'registration']);
+Route::middleware('guest')->post('registration', [UserController::class, 'register']);
 
 Route::middleware('auth')->get('temp', [UserController::class, 'temp']);
 Route::middleware('auth')->get('logout', [UserController::class, 'logout']);
