@@ -20,12 +20,13 @@ Route::middleware('auth')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('guest')->post('login', [UserController::class, 'login']);
+Route::post('login', [UserController::class, 'login']);
 Route::middleware('guest')->post('registration', [UserController::class, 'register']);
 Route::get('logout', [UserController::class, 'logout']);
 Route::get('alive', [UserController::class, 'isAlive']);
 
 Route::middleware('auth')->get('tasks', [TaskController::class, 'show']);
+Route::middleware('auth')->get('temp', [UserController::class, 'temp']);
 Route::middleware('auth')->get('admin/dashboard', [TaskController::class, 'show']);
 Route::middleware('auth')->get('admin/users', [TaskController::class, 'users']);
 

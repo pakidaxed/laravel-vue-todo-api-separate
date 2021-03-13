@@ -9,10 +9,6 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout')
-      setTimeout(this.redirect, 2000)
-    },
-    redirect() {
-      this.$router.push('/')
     }
   },
   beforeMount() {

@@ -50,9 +50,9 @@ export default {
               this.error.password = response.data.password ?? null
             } else {
               console.log(response)
-              this.$store.isAuthenticated = true;
-              if (response.data.admin === true) {
-                this.$store.isAdmin = true
+              this.$store.commit('setAuthentication', {state: true})
+              if (response.data.admin === 'ROLE_ADMIN') {
+                this.$store.commit('setAdminStatus', {state: true})
               }
               this.$router.push('/tasks');
             }
@@ -65,7 +65,7 @@ export default {
 
 <style scoped>
 .form-box {
-  width: 500px;
+  width: 400px;
   margin: 0 auto;
 }
 

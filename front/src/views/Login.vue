@@ -1,5 +1,5 @@
 <template>
-<h1>Login page</h1>
+<h1>TODO APP</h1>
   <login-form></login-form>
 </template>
 
@@ -12,5 +12,8 @@ name: "Login",
 </script>
 
 <style scoped>
-
+h1 {
+  color: crimson;
+  text-align: center;
+}
 </style>

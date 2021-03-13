@@ -100,7 +100,7 @@ export default {
 }
 
 .form-box {
-  width: 500px;
+  width: 400px;
   margin: 0 auto;
 }
 

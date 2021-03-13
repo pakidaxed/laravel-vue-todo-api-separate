@@ -1,39 +1,34 @@
 <template>
-<!--  // TEMP TO NAVIGATE FOR MY SELF / MUST BE DELETED-->
-  <div id="nav">
-    <router-link to="/">Login</router-link> |
-    <router-link to="/registration">Registration</router-link> |
-    <router-link to="/tasks">User Tasks</router-link> |
-    <router-link to="/admin/">Dashboard (admin)</router-link> |
-    <router-link to="/admin/users">Users (admin)</router-link> |
-    <router-link to="/logout">Logout</router-link> |
-    <router-link to="/logout-extra">Logout (test)</router-link> |
-  </div>
   <router-view/>
+  <div class="store">
+    {{ $store.state }}
+  </div>
 </template>
 <script>
 
 </script>
 
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Montserrat, sans-serif;
 }
 
-#nav {
-  padding: 30px;
+* {
+  box-sizing: border-box;
+}
+a, a:visited, a:link {
+  padding: 0 10px;
+  text-decoration: none;
+  color: crimson;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+a:hover {
+  color: #800c23;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

@@ -1,28 +1,27 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import store from '../store/index.js'
 
-
 const routes = [
     {
         path: '/',
-        component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
+        component: () => import('../views/Login.vue'),
         meta: {guest: true},
     },
     {
         path: '/registration',
-        component: () => import(/* webpackChunkName: "registration" */ '../views/Registration.vue'),
+        component: () => import('../views/Registration.vue'),
         meta: {guest: true}
     }
     ,
     {
         path: '/tasks',
-        component: () => import(/* webpackChunkName: "tasks" */ '../views/user/Tasks.vue'),
+        component: () => import('../views/user/Tasks.vue'),
         meta: {requiresAuth: true}
     }
     ,
     {
         path: '/admin',
-        component: () => import(/* webpackChunkName: "admin" */ '../views/admin/Dashboard.vue'),
+        component: () => import('../views/admin/Dashboard.vue'),
         meta: {requiresAuth: true},
         children: [
             {
@@ -34,8 +33,12 @@ const routes = [
     },
     {
         path: '/logout',
-        component: () => import(/* webpackChunkName: "admin/users" */ '../views/Logout.vue'),
+        component: () => import('../views/Logout.vue'),
     },
+    {
+        path: '/*',
+        redirect: '/'
+    }
 ]
 
 const router = createRouter({
@@ -44,13 +47,14 @@ const router = createRouter({
 
 })
 
+
 router.beforeEach((to, _, next) => {
-    store.dispatch('isAlive')
-    if (to.meta.requiresAuth && !store.isAuthenticated) {
+    if (to.meta.requiresAuth && !store.getters.getAuth) {
         next(false)
-    } else if (to.meta.guest && store.isAuthenticated) {
+    } else if (to.meta.guest && store.getters.getAuth) {
         next(false)
     } else {
+        store.dispatch('isAlive')
         next();
     }
 })

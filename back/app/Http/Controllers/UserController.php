@@ -33,8 +33,9 @@ class UserController extends Controller
 
         if ($validator->fails()) return $validator->errors();
 
+
         if (Auth::attempt($credentials)) {
-            $adminStatus = User::where('role', 'ROLE_ADMIN')->exists();
+            $adminStatus = User::select('role')->where('id', Auth::id())->pluck('role')->first();
             $this->request->session()->regenerate();
             return ['success' => 'User successfully logged in.', 'admin' => $adminStatus];
 
@@ -94,7 +95,11 @@ class UserController extends Controller
     public function logout()
     {
         Auth::logout();
-//        $this->request->session()->invalidate();
+    }
+
+    public function temp()
+    {
+        return User::where('id', Auth::id())->get();
     }
 
 }
