@@ -72,17 +72,19 @@ export default {
 
           .then(response => {
             if (!response.data.success) {
-              console.log(response.data)
-              if (response.data.name) this.error.name = response.data.name
-              if (response.data.email) this.error.email = response.data.email
-              if (response.data.password) this.error.password = response.data.password
-              if (response.data.confirm_password) this.error.confirmPassword = response.data.confirm_password
-              if (response.data.role) this.error.role = response.data.role
+              this.error.name = response.data.name ?? null
+              this.error.email = response.data.email ?? null
+              this.error.password = response.data.password ?? null
+              this.error.confirmPassword = response.data.confirm_password ?? null
+              this.error.role = response.data.role ?? null
             } else {
               this.$router.push('/');
             }
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+            console.log('ERROR CATCH')
+            console.log(error)
+          })
 
 
     }

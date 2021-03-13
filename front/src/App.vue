@@ -6,9 +6,14 @@
     <router-link to="/tasks">User Tasks</router-link> |
     <router-link to="/admin/">Dashboard (admin)</router-link> |
     <router-link to="/admin/users">Users (admin)</router-link> |
+    <router-link to="/logout">Logout</router-link> |
+    <router-link to="/logout-extra">Logout (test)</router-link> |
   </div>
   <router-view/>
 </template>
+<script>
+
+</script>
 
 <style>
 #app {

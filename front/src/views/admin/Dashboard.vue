@@ -3,20 +3,14 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
   name: "Dashboard",
   methods: {
-    logout() {
-      // eslint-disable-next-line no-undef
-      axios
-          .get('http://localhost:8000/api/logout')
-          .then(response => console.log(response))
-    }
+
   },
   beforeMount() {
-    this.logout()
+    this.$store.dispatch('isAlive')
   }
 }
 </script>

@@ -26,19 +26,28 @@ class UserController extends Controller
     {
         $credentials = $this->request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $this->request->session()->regenerate();
+        $validator = Validator::make($credentials, [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-            return ['success' => 'ok'];
+        if ($validator->fails()) return $validator->errors();
+
+        if (Auth::attempt($credentials)) {
+            $adminStatus = User::where('role', 'ROLE_ADMIN')->exists();
+            $this->request->session()->regenerate();
+            return ['success' => 'User successfully logged in.', 'admin' => $adminStatus];
+
+
         }
 
-        return [
-            'error' => 'Authorization failed. Please try again.',
-        ];
+
+        return ['error' => 'Login failed.'];
 
     }
 
-    public function register()
+    public
+    function register()
     {
         $credentials = $this->request->only('name', 'email', 'password', 'confirm_password', 'role');
 
@@ -77,15 +86,15 @@ class UserController extends Controller
 
     }
 
-    public function temp(Response $response)
+    public function isAlive()
     {
-        return Auth::user()->email;
+        return Auth::check() ? Response()->noContent() : Response('', 401);
     }
 
     public function logout()
     {
         Auth::logout();
-        $this->request->session()->invalidate();
+//        $this->request->session()->invalidate();
     }
 
 }
