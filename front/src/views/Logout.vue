@@ -21,7 +21,7 @@ export default {
 .logout-box {
   display: flex;
   width: 100%;
-  height: 500px;
+  height: 300px;
   justify-content: center;
   align-items: center;
 }

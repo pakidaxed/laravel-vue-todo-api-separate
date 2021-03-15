@@ -1,38 +1,41 @@
 <template>
-  <div class="form-box">
-    <form @submit.prevent="register">
-      <div class="form-control">
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" v-model="regData.name"/>
-      </div>
-      <span class="error" v-if="error.name">{{ error.name }}</span>
-      <div class="form-control">
-        <label for="email">E-mail:</label>
-        <input type="email" name="email" id="email" v-model="regData.email"/>
-      </div>
-      <span class="error" v-if="error.email">{{ error.email }}</span>
-      <div class="form-control">
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" v-model="regData.password"/>
-        <span class="error" v-if="error.password">{{ error.password }}</span>
-      </div>
-      <div class="form-control">
-        <label for="confirm_password">Confirm Password:</label>
-        <input type="password" name="confirm_password" id="confirm_password" v-model="regData.confirmPassword"/>
-      </div>
-      <span class="error" v-if="error.confirmPassword">{{ error.confirmPassword }}</span>
-      <div class="form-control">
-        <label for="confirm_password">Role:</label>
-        <select name="role" id="role" v-model="regData.role">
-          <option value="ROLE_USER">Simple user</option>
-          <option value="ROLE_ADMIN">Admin (test)</option>
-        </select>
-      </div>
-      <span class="error" v-if="error.role">{{ error.role }}</span>
-      <div class="form-actions">
-        <button>Register</button>
-      </div>
-    </form>
+  <div class="container">
+    <div class="form-box">
+      <form @submit.prevent="register">
+        <div class="form-control">
+          <label for="name">Name:</label>
+          <input type="text" name="name" id="name" v-model="regData.name"/>
+        </div>
+        <span class="error" v-if="error.name">{{ error.name }}</span>
+        <div class="form-control">
+          <label for="email">E-mail:</label>
+          <input type="email" name="email" id="email" v-model="regData.email"/>
+        </div>
+        <span class="error" v-if="error.email">{{ error.email }}</span>
+        <div class="form-control">
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" v-model="regData.password"/>
+          <span class="error" v-if="error.password">{{ error.password }}</span>
+        </div>
+        <div class="form-control">
+          <label for="confirm_password">Confirm Password:</label>
+          <input type="password" name="confirm_password" id="confirm_password" v-model="regData.confirmPassword"/>
+        </div>
+        <span class="error" v-if="error.confirmPassword">{{ error.confirmPassword }}</span>
+        <div class="form-control">
+          <label for="confirm_password">Role:</label>
+          <select name="role" id="role" v-model="regData.role">
+            <option value="ROLE_USER">Simple user</option>
+            <option value="ROLE_ADMIN">Admin (test)</option>
+          </select>
+        </div>
+        <span class="error" v-if="error.role">{{ error.role }}</span>
+        <div class="form-actions">
+          <button>Register</button>
+          <router-link to="/">Login</router-link>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 

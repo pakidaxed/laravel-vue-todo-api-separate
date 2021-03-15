@@ -3,22 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use http\Env\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
     private $request;
+    private $user;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, User $user)
     {
         $this->request = $request;
+        $this->user = $user;
 
     }
 
@@ -33,22 +34,19 @@ class UserController extends Controller
 
         if ($validator->fails()) return $validator->errors();
 
-
         if (Auth::attempt($credentials)) {
-            $adminStatus = User::select('role')->where('id', Auth::id())->pluck('role')->first();
             $this->request->session()->regenerate();
-            return ['success' => 'User successfully logged in.', 'admin' => $adminStatus];
+            return ['success' => 'User successfully logged in.', 'admin' => $this->user->isAdmin()];
 
 
         }
 
 
-        return ['error' => 'Login failed.'];
+        return new Response('Login failed', 401);
 
     }
 
-    public
-    function register()
+    public function register()
     {
         $credentials = $this->request->only('name', 'email', 'password', 'confirm_password', 'role');
 
@@ -59,12 +57,10 @@ class UserController extends Controller
             'confirm_password' => 'required|same:password',
             'role' => 'required|in:ROLE_USER,ROLE_ADMIN'
         ], [
-            'name.required' => 'The name field is required',
             'name.regex' => 'Only letters allowed for the name'
         ]);
 
         if ($validator->fails()) return $validator->errors();
-
 
         $user = new User();
         $user->name = $this->request->get('name');
@@ -80,16 +76,16 @@ class UserController extends Controller
             } else {
                 $message = 'Unknown error, please contact administrator';
             }
+
             return ['message' => $message];
         }
+
         return ['success' => true];
-
-
     }
 
     public function isAlive()
     {
-        return Auth::check() ? Response()->noContent() : Response('', 401);
+        return Auth::check() ? $this->user->isAdmin() : Response()->noContent(401);
     }
 
     public function logout()

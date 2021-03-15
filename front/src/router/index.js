@@ -22,23 +22,18 @@ const routes = [
     {
         path: '/admin',
         component: () => import('../views/admin/Dashboard.vue'),
-        meta: {requiresAuth: true},
-        children: [
-            {
-                path: 'users',
-                component: () => import('../views/admin/Users'),
-                meta: {requiresAuth: true}
-            }
-        ]
+        meta: {requiresAuth: true, requiresAdmin: true},
+    },
+    {
+        path: '/admin/users',
+        component: () => import('../views/admin/Users.vue'),
+        meta: {requiresAuth: true, requiresAdmin: true}
+
     },
     {
         path: '/logout',
         component: () => import('../views/Logout.vue'),
     },
-    {
-        path: '/*',
-        redirect: '/'
-    }
 ]
 
 const router = createRouter({
@@ -47,14 +42,14 @@ const router = createRouter({
 
 })
 
-
 router.beforeEach((to, _, next) => {
     if (to.meta.requiresAuth && !store.getters.getAuth) {
+        next(false)
+    } else if (to.meta.requiresAdmin && !store.getters.getAdminStatus) {
         next(false)
     } else if (to.meta.guest && store.getters.getAuth) {
         next(false)
     } else {
-        store.dispatch('isAlive')
         next();
     }
 })

@@ -5,7 +5,8 @@
     </div>
     <div class="header-nav">
       <nav>
-        <router-link v-if="isAdmin" to="/admin">Dashboard</router-link>
+        <router-link v-if="!isAdmin" to="/tasks">My Tasks</router-link>
+        <router-link v-if="isAdmin" to="/admin">All Tasks</router-link>
         <router-link v-if="isAdmin" to="/admin/users">Users</router-link>
         <router-link to="/logout">Logout</router-link>
 

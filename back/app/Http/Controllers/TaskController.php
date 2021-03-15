@@ -11,14 +11,27 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
+    private $user;
+    private $task;
+
+    public function __construct(User $user, Task $task)
+    {
+        $this->user = $user;
+        $this->task = $task;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return string[]
+     * @return Response
      */
-    public function index(): array
+    public function index()
     {
-        return ['index' => 'ok'];
+        if ($this->user->isAdmin()) {
+            return $this->task->all();
+        } else {
+            return $this->task->where('owner_id', Auth::id())->get();
+        }
     }
 
     /**
@@ -35,10 +48,11 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Task $task
+     * @return string
      */
-    public function show(Task $task)
+    public function show()
     {
+        if (User::where('id', Auth::id()) === 'jucius.tomas@gmail.com') return 'pipopu';
         return Task::where('owner_id', Auth::id())->get();
     }
 

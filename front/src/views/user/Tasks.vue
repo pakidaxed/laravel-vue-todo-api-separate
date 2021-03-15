@@ -1,7 +1,25 @@
 <template>
   <the-header></the-header>
-  <h1>Tasks</h1>
-  <router-link to="/logout">Logout</router-link>
+  <div class="container">
+    <h1>Tasks</h1>
+    <div class="tasks" v-if="tasks">
+      <table>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="task in tasks" :key="task.id">
+          <td>{{ task.name }}</td>
+          <td>{{ task.status }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <p v-else>No tasks in the database</p>
+  </div>
 </template>
 
 <script>
@@ -9,18 +27,21 @@ import axios from "axios";
 import TheHeader from "@/components/templates/TheHeader";
 
 export default {
-  name: "Tasks",
   components: {TheHeader},
+  data() {
+    return {
+      tasks: null
+    }
+  },
   methods: {
-    temp() {
-      // eslint-disable-next-line no-undef
+    getTasks() {
       axios
-          .get('http://localhost:8000/api/temp')
-          .then(response => console.log(response.data))
+          .get('http://localhost:8000/api/tasks')
+          .then(response => this.tasks = response.data)
     }
   },
   beforeMount() {
-    this.temp()
+    this.getTasks()
   }
 }
 </script>

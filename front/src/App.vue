@@ -1,11 +1,13 @@
 <template>
-  <router-view/>
+    <router-view/>
   <div class="store">
     {{ $store.state }}
   </div>
 </template>
+
 <script>
 
+export default {}
 </script>
 
 
@@ -21,6 +23,12 @@ body, html {
 * {
   box-sizing: border-box;
 }
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
 a, a:visited, a:link {
   padding: 0 10px;
   text-decoration: none;
@@ -29,6 +37,21 @@ a, a:visited, a:link {
 
 a:hover {
   color: #800c23;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: crimson;
+  color: white;
+  font-size: 1.3rem;
+}
+th, tr, td {
+  border: 1px solid black;
+  padding: 15px 5px;
 }
 
 </style>

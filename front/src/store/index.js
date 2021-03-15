@@ -28,11 +28,25 @@ export default createStore({
             axios
                 .get('http://localhost:8000/api/alive')
                 .then((response) => {
-                    if (response.status === 204) {
-                        console.log('RESPONSE 204')
-                        context.commit('setAuthentication', {state: true})
+                        if (response.data) {
+                            context.commit('setAuthentication', {state: true})
+                            context.commit('setAdminStatus', {state: true})
+                            if (router.currentRoute === '/' && context.getters.getAdminStatus
+                                || context.getters.getAdminStatus) {
+                                router.push('/admin')
+                            } else {
+                                router.push(router.currentRoute)
+                            }
+                        } else {
+                            context.commit('setAuthentication', {state: true})
+                            if (router.currentRoute === '/' && context.getters.getAuth || context.getters.getAuth) {
+                                router.push('/tasks')
+                            } else {
+                                router.push(router.currentRoute)
+                            }
+                        }
                     }
-                })
+                )
                 .catch(() => {
                     context.commit('setAuthentication', {state: false})
                     context.commit('setAdminStatus', {state: false})
