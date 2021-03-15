@@ -23,14 +23,14 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Task[]|Collection|Response
      */
     public function index()
     {
         if ($this->user->isAdmin()) {
-            return $this->task->all();
+            return $this->task->select('id', 'name', 'status', 'owner_id')->get();
         } else {
-            return $this->task->where('owner_id', Auth::id())->get();
+            return $this->task->select('id', 'name', 'status')->where('owner_id', Auth::id())->get();
         }
     }
 

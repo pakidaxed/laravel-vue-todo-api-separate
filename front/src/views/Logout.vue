@@ -9,7 +9,8 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout')
-    }
+      setTimeout(() => this.$router.push('/'), 1000)
+    },
   },
   beforeMount() {
     this.logout()

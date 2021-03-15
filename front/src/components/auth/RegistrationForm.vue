@@ -40,8 +40,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "RegistrationForm",
   data() {
@@ -64,33 +62,36 @@ export default {
   },
   methods: {
     register() {
-      axios
-          .post('http://localhost:8000/api/registration', {
-            "name": this.regData.name,
-            "email": this.regData.email,
-            "password": this.regData.password,
-            "confirm_password": this.regData.confirmPassword,
-            "role": this.regData.role
-          })
-
-          .then(response => {
-            if (!response.data.success) {
-              this.error.name = response.data.name ?? null
-              this.error.email = response.data.email ?? null
-              this.error.password = response.data.password ?? null
-              this.error.confirmPassword = response.data.confirm_password ?? null
-              this.error.role = response.data.role ?? null
-            } else {
-              this.$router.push('/');
-            }
-          })
-          .catch(error => {
-            console.log('ERROR CATCH')
-            console.log(error)
-          })
-
-
+      this.$store.dispatch('registration', this.regData)
     }
+    // register() {
+    //   axios
+    //       .post('http://localhost:8000/api/registration', {
+    //         "name": this.regData.name,
+    //         "email": this.regData.email,
+    //         "password": this.regData.password,
+    //         "confirm_password": this.regData.confirmPassword,
+    //         "role": this.regData.role
+    //       })
+    //
+    //       .then(response => {
+    //         if (!response.data.success) {
+    //           this.error.name = response.data.name ?? null
+    //           this.error.email = response.data.email ?? null
+    //           this.error.password = response.data.password ?? null
+    //           this.error.confirmPassword = response.data.confirm_password ?? null
+    //           this.error.role = response.data.role ?? null
+    //         } else {
+    //           this.$router.push('/');
+    //         }
+    //       })
+    //       .catch(error => {
+    //         console.log('ERROR CATCH')
+    //         console.log(error)
+    //       })
+    //
+    //
+    // }
   }
 
 }

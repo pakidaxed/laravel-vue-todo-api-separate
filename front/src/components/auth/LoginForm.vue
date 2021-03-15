@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
   name: "LoginForm",
@@ -44,29 +43,32 @@ export default {
   },
   methods: {
     login() {
-      axios
-          .post('http://localhost:8000/api/login', {
-            "email": this.loginData.email,
-            "password": this.loginData.password
-          })
-
-          .then(response => {
-            if (!response.data.success) {
-              this.error.email = response.data.email ?? null
-              this.error.password = response.data.password ?? null
-            } else {
-              this.$store.commit('setAuthentication', {state: true})
-              this.$store.commit('setUserData', response.data.user)
-              if (response.data.admin === true) {
-                this.$store.commit('setAdminStatus', {state: true})
-                this.$router.push('/admin')
-                return
-              }
-              this.$router.push('/tasks');
-            }
-          })
-          .catch(() => this.error.main = 'Login failed')
+      this.$store.dispatch('login', this.loginData)
     }
+    //   axios
+    //       .post('http://localhost:8000/api/login', {
+    //         "email": this.loginData.email,
+    //         "password": this.loginData.password
+    //       })
+    //
+    //       .then(response => {
+    //         if (!response.data.success) {
+    //           this.error.email = response.data.email ?? null
+    //           this.error.password = response.data.password ?? null
+    //         } else {
+    //           this.$store.commit('setAuthentication', {state: true})
+    //           this.$store.commit('setCurrentUser', response.data.user)
+    //           this.$store.commit('setAllTasks', response.data.tasks)
+    //           if (response.data.admin === true) {
+    //             this.$store.commit('setAdminStatus', {state: true})
+    //             this.$router.push('/admin')
+    //             return
+    //           }
+    //           this.$router.push('/tasks');
+    //         }
+    //       })
+    //       .catch(() => this.error.main = 'Login failed')
+    // }
   },
 }
 </script>

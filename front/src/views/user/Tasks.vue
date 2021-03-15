@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import TheHeader from "@/components/templates/TheHeader";
 
 export default {
@@ -33,16 +32,14 @@ export default {
       tasks: null
     }
   },
-  methods: {
-    getTasks() {
-      axios
-          .get('http://localhost:8000/api/tasks')
-          .then(response => this.tasks = response.data)
-    }
-  },
-  beforeMount() {
-    this.getTasks()
-  }
+  // methods: {
+  //   getTasks() {
+  //     this.tasks = this.$store.dispatch('getTasks')
+  //   }
+  // },
+  // beforeCreate() {
+  //   this.getTasks()
+  // }
 }
 </script>
 

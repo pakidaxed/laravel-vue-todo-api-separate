@@ -7,7 +7,12 @@
 
 <script>
 
-export default {}
+
+export default {
+  created() {
+    this.$store.dispatch('isAlive')
+  }
+}
 </script>
 
 

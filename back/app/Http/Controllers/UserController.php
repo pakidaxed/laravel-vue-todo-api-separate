@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -15,11 +15,13 @@ class UserController extends Controller
 {
     private $request;
     private $user;
+    private $task;
 
-    public function __construct(Request $request, User $user)
+    public function __construct(Request $request, User $user, Task $task)
     {
         $this->request = $request;
         $this->user = $user;
+        $this->task = $task;
 
     }
 
@@ -35,12 +37,7 @@ class UserController extends Controller
         if ($validator->fails()) return $validator->errors();
 
         if (Auth::attempt($credentials)) {
-            $this->request->session()->regenerate();
-
-            return [
-                'success' => 'User successfully logged in.',
-                'admin' => $this->user->isAdmin(),
-                'user' => $this->user->where('id', Auth::id())->first()];
+           return $this->isAlive();
         }
 
         return new Response('Login failed', 401);
@@ -86,13 +83,13 @@ class UserController extends Controller
 
     public function isAlive()
     {
-        return Auth::check() ? $this->user->isAdmin() : Response()->noContent(401);
+        return Auth::check() ? $this->user->getCurrentUser() : new Response('', 511);
     }
 
     public function logout()
     {
         Auth::logout();
-        $this->request->session()->regenerate();
+        $this->request->session()->invalidate();
     }
 
     public function temp()

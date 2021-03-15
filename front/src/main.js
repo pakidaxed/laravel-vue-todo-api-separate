@@ -8,4 +8,3 @@ axios.defaults.withCredentials = true
 
 createApp(App).use(store).use(router).mount('#app')
 
-store.dispatch('isAlive')

@@ -23,7 +23,7 @@ export default {
     }
   },
   beforeMount() {
-    this.isAdmin = this.$store.getters.getAdminStatus
+    this.isAdmin = this.$store.getters.getAdmin
   }
 
 }

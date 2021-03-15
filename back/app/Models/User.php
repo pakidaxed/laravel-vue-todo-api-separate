@@ -42,9 +42,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // this function is needed for middleware to check is this user is admin
     public function isAdmin(): bool
     {
         $role = User::select('role')->where('id', Auth::id())->pluck('role')->first();
         return $role === 'ROLE_ADMIN';
+    }
+
+    public function getCurrentUser()
+    {
+        return User::select('id', 'name', 'email', 'role')->where('id', Auth::id())->first();
     }
 }

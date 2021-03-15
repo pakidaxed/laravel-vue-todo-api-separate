@@ -42,15 +42,14 @@ const router = createRouter({
 
 })
 
-router.beforeEach((to, _, next) => {
-    if (to.meta.requiresAuth && !store.getters.getAuth) {
-        next(false)
-    } else if (to.meta.requiresAdmin && !store.getters.getAdminStatus) {
-        next(false)
-    } else if (to.meta.guest && store.getters.getAuth) {
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth && !store.getters.getAuthenticated) {
+        next('/')
+    } else if (to.meta.guest && store.getters.getAuthenticated) {
         next(false)
     } else {
-        next();
+        next()
     }
 })
 
