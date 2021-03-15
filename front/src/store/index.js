@@ -5,7 +5,8 @@ import router from "@/router";
 export default createStore({
     state: {
         isAuthenticated: false,
-        isAdmin: false
+        isAdmin: false,
+        user: null
     },
     getters: {
         getAuth(state) {
@@ -22,6 +23,9 @@ export default createStore({
         setAdminStatus(state, action) {
             state.isAdmin = action.state
         },
+        setUserData(state, data) {
+            state.user = data
+        }
     },
     actions: {
         isAlive(context) {
@@ -63,7 +67,7 @@ export default createStore({
                 context.commit('setAuthentication', {state: false})
                 context.commit('setAdminStatus', {state: false})
                 router.push('/')
-            }, 2000)
+            }, 1500)
 
 
         }

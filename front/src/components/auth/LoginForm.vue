@@ -56,6 +56,7 @@ export default {
               this.error.password = response.data.password ?? null
             } else {
               this.$store.commit('setAuthentication', {state: true})
+              this.$store.commit('setUserData', response.data.user)
               if (response.data.admin === true) {
                 this.$store.commit('setAdminStatus', {state: true})
                 this.$router.push('/admin')

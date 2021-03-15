@@ -36,11 +36,12 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials)) {
             $this->request->session()->regenerate();
-            return ['success' => 'User successfully logged in.', 'admin' => $this->user->isAdmin()];
 
-
+            return [
+                'success' => 'User successfully logged in.',
+                'admin' => $this->user->isAdmin(),
+                'user' => $this->user->where('id', Auth::id())->first()];
         }
-
 
         return new Response('Login failed', 401);
 
@@ -91,6 +92,7 @@ class UserController extends Controller
     public function logout()
     {
         Auth::logout();
+        $this->request->session()->regenerate();
     }
 
     public function temp()

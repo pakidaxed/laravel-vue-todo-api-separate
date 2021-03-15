@@ -2,7 +2,7 @@
   <the-header></the-header>
   <div class="container">
     <h1>Tasks</h1>
-    <div class="tasks" v-if="tasks">
+    <div class="tasks" v-if="tasks > 0">
       <table>
         <thead>
         <tr>
