@@ -3,7 +3,7 @@
   <div class="container">
     <h1>All Users</h1>
     <p v-if="errors">{{ errors }}</p>
-    <div class="tasks" v-if="users > 0">
+    <div class="users" v-if="users.length > 0">
       <table>
         <thead>
         <tr>
@@ -37,6 +37,9 @@ export default {
     async remove(id) {
       await this.$store.dispatch('deleteUser', id)
     }
+  },
+  async beforeCreate() {
+    await this.$store.dispatch('getTasks')
   },
   computed: {
     users() {

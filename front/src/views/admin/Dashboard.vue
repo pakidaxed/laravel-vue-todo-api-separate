@@ -9,14 +9,16 @@
       <table>
         <thead>
         <tr>
+          <th>Date <span @click="getSortedList()" class="sort">🔽</span></th>
           <th>Name</th>
-          <th>Status</th>
+          <th>Status <span @click="getSortedList('status')" class="sort">🔽</span></th>
           <th>User</th>
           <th>Action</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="task in tasks" :key="task.id">
+          <td>{{ convertToNormalDate(task.created_at) }}</td>
           <td>{{ task.name }}</td>
           <td>{{ task.status }}</td>
           <td>{{ convertToName(task.owner_id) }}</td>
@@ -42,6 +44,9 @@ export default {
     return {}
   },
   methods: {
+    getSortedList(sort = '') {
+      this.$store.dispatch('getTasks', sort)
+    },
     edit(id) {
       this.$router.push('/admin/edit/' + id)
       this.$store.dispatch('setCurrentTask', id)
@@ -55,6 +60,15 @@ export default {
       const filer = this.users.filter(x => x.id === id)
       const user = filer.find(x => x.id === id)
       return user.name + ' (' + user.email + ')'
+    },
+    convertToNormalDate(date) {
+      const createdDate = new Date(date)
+      return createdDate.getFullYear() + '-' +
+          createdDate.getMonth() + '-' +
+          createdDate.getDay() + ' ' +
+          createdDate.getHours() + ':' +
+          createdDate.getMinutes() + ':' +
+          createdDate.getSeconds()
     }
   },
   async beforeCreate() {
@@ -75,5 +89,7 @@ export default {
 </script>
 
 <style scoped>
-
+.sort:hover {
+  cursor: pointer;
+}
 </style>

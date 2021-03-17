@@ -3,7 +3,7 @@
   <div class="container">
     <p>{{tasks}}</p>
     <h1>Tasks</h1>
-    <div class="tasks" v-if="tasks > 0">
+    <div class="tasks" v-if="tasks.length > 0">
       <table>
         <thead>
         <tr>

@@ -55,7 +55,7 @@ export default createStore({
             state.currentTask = state.allTasks.find(x => x.id === id)
         },
         setAllUsers(state, users) {
-            state.allUsers = users
+            state.allUsers = users ?? []
         },
         resetErrors(state) {
             state.errors = null
@@ -145,9 +145,10 @@ export default createStore({
 
 
         },
-        async getTasks({commit}) {
+        async getTasks({commit}, sort = '') {
+            console.log('SORTAS: ' + sort)
             await axios
-                .get('http://localhost:8000/api/tasks')
+                .get('http://localhost:8000/api/tasks/' + sort)
                 .then(response => {
                     console.log(response.data)
                     commit('setAllTasks', response.data.tasks)
@@ -205,8 +206,6 @@ export default createStore({
         setCurrentTask({commit}, id) {
             commit('setCurrentTask', id)
         }
-
-
     },
     modules: {}
 })

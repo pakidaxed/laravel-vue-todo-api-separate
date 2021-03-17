@@ -21,7 +21,7 @@ Route::middleware('guest')->post('registration', [UserController::class, 'regist
 Route::get('logout', [UserController::class, 'logout']);
 Route::get('alive', [UserController::class, 'isAlive'])->name('login');
 
-Route::middleware('auth')->get('tasks', [TaskController::class, 'index']);
+Route::middleware('auth')->get('tasks/{sort?}', [TaskController::class, 'index']);
 Route::middleware(['auth', 'admin'])->post('tasks/create', [TaskController::class, 'create']);
 Route::middleware(['auth', 'admin'])->delete('tasks/delete/{id}', [TaskController::class, 'delete']);
 Route::middleware(['auth', 'admin'])->put('tasks/update/{id}', [TaskController::class, 'update']);

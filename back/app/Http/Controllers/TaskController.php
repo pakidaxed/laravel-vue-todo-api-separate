@@ -28,14 +28,24 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param string $sort
      * @return Task[]|Collection|Response
      */
-    public function index()
+    public function index($sort = 'created_at')
     {
         if ($this->user->isAdmin()) {
             return [
-                'tasks' => $this->task->select('id', 'name', 'status', 'owner_id')->orderBy('id', 'desc')->get(),
-                'users' => $this->user->select('id', 'name', 'email')->where('role', 'ROLE_USER')->orderBy('name', 'asc')->get()
+                'tasks' => $this
+                    ->task
+                    ->select('id', 'name', 'status', 'owner_id', 'created_at')
+                    ->orderBy($sort, 'desc')
+                    ->get(),
+                'users' => $this
+                    ->user
+                    ->select('id', 'name', 'email')
+                    ->where('role', 'ROLE_USER')
+                    ->orderBy('name', 'asc')
+                    ->get()
             ];
         } else {
             return ['tasks' => $this->task->select('id', 'name', 'status')->where('owner_id', Auth::id())->get()];
@@ -47,7 +57,7 @@ class TaskController extends Controller
         $taskData = $this->request->only('name', 'user');
 
         $validator = Validator::make($taskData, [
-            'name' => 'required|max:100|regex:/^[a-z +]*$/i',
+            'name' => 'required|max:200|regex:/^[a-z \?\!\.\,+]*$/i',
             'user' => 'required|integer',
         ]);
 
@@ -155,7 +165,7 @@ class TaskController extends Controller
             'status' => 'required|in:todo,progress,done',
             'owner_id' => 'required|integer',
             'my_id' => 'required|same:owner_id'
-        ],[
+        ], [
             'my_id.same' => 'You can only change status of your own tasks'
         ]);
 
