@@ -81,6 +81,22 @@ class UserController extends Controller
         return ['success' => true];
     }
 
+    public function delete($id)
+    {
+
+        $user = User::where('id', $id)->first() ?: null;
+        if (!$user) {
+            return ['success' => false, 'error' => 'No such user'];
+        }
+        $result = $user->delete();
+
+        if($result) {
+            Task::where('owner_id', $id)->delete();
+        }
+
+        return ['success' => $result];
+    }
+
     public function isAlive()
     {
         return Auth::check() ? $this->user->getCurrentUser() : new Response('', 511);
@@ -90,11 +106,6 @@ class UserController extends Controller
     {
         Auth::logout();
         $this->request->session()->invalidate();
-    }
-
-    public function temp()
-    {
-        return User::where('id', Auth::id())->get();
     }
 
 }

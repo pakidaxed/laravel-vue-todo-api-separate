@@ -23,6 +23,18 @@ const routes = [
         path: '/admin',
         component: () => import('../views/admin/Dashboard.vue'),
         meta: {requiresAuth: true, requiresAdmin: true},
+        children: [
+            {
+                path: 'new',
+                component: () => import('../components/admin/NewTask.vue'),
+                meta: {requiresAuth: true, requiresAdmin: true},
+            },
+            {
+                path: 'edit/:id',
+                component: () => import('../components/admin/EditTask.vue'),
+                meta: {requiresAuth: true, requiresAdmin: true},
+            },
+        ]
     },
     {
         path: '/admin/users',

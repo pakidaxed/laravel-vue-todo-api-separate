@@ -1,7 +1,6 @@
 <template>
-    <router-view/>
+  <router-view/>
   <div class="store">
-    {{ $store.state }}
   </div>
 </template>
 
@@ -54,6 +53,7 @@ th {
   color: white;
   font-size: 1.3rem;
 }
+
 th, tr, td {
   border: 1px solid black;
   padding: 15px 5px;

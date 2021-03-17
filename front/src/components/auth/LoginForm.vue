@@ -6,12 +6,12 @@
           <label for="email">E-mail:</label>
           <input type="email" name="email" id="email" v-model="loginData.email"/>
         </div>
-        <span class="error" v-if="error.email">{{ error.email }}</span>
+        <span class="error" v-if="error">{{ error.email }}</span>
         <div class="form-control">
           <label for="password">Password:</label>
           <input type="password" name="password" id="password" v-model="loginData.password"/>
         </div>
-        <span class="error" v-if="error.password">{{ error.password }}</span>
+        <span class="error" v-if="error">{{ error.password }}</span>
         <div class="form-actions">
           <div class="loading" v-if="loading"><img src="../../assets/loading.gif" alt="loading"/></div>
           <button v-else>Login</button>
@@ -19,7 +19,7 @@
         </div>
       </form>
     </div>
-    <div class="error" v-if="error.main">
+    <div class="error" v-if="error">
       <p>{{ error.main }}</p>
     </div>
   </div>
@@ -36,24 +36,16 @@ export default {
         email: null,
         password: null
       },
-      error: {
-        main: null,
-        email: null,
-        password: null
-      }
+      error: null,
+
     }
   },
   methods: {
-    login() {
+    async login() {
       this.loading = true
-      this.$store.dispatch('login', this.loginData)
-      setTimeout(() => {
-        if (this.$store.getters.getErrors) {
-          this.error.main = 'Login failed'
-          this.error = this.$store.getters.getErrors
-          this.loading = false
-        }
-      }, 400)
+      await this.$store.dispatch('login', this.loginData)
+      this.error = this.$store.getters.getErrors
+      this.loading = false
     },
   }
 }

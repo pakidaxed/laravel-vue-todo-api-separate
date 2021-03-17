@@ -2,8 +2,10 @@
   <the-header></the-header>
   <div class="container">
     <h1>Dashboard</h1>
-    <h1>All Tasks</h1>
-    <div class="tasks" v-if="tasks">
+    <h1>All Tasks<span><router-link to="/admin/new">New task</router-link></span></h1>
+    <p v-if="errors">{{ errors }}</p>
+    <router-view></router-view>
+    <div class="tasks" v-if="tasks.length > 0">
       <table>
         <thead>
         <tr>
@@ -17,8 +19,11 @@
         <tr v-for="task in tasks" :key="task.id">
           <td>{{ task.name }}</td>
           <td>{{ task.status }}</td>
-          <td>{{ task.owner_id }}</td>
-          <td>Edit, Delete</td>
+          <td>{{ convertToName(task.owner_id) }}</td>
+          <td>
+            <button @click="edit(task.id)">Edit</button>
+            <button @click="remove(task.id)">Delete</button>
+          </td>
         </tr>
         </tbody>
       </table>
@@ -30,28 +35,41 @@
 <script>
 
 import TheHeader from "@/components/templates/TheHeader";
-import axios from "axios";
 
 export default {
   components: {TheHeader},
   data() {
-    return {
-      tasks: null
-    }
+    return {}
   },
   methods: {
-    getTasks() {
-      axios
-          .get('http://localhost:8000/api/tasks')
-          .then(response => {
-            if (response.data.length > 0) {
-              this.tasks = response.data
-            }
-          })
+    edit(id) {
+      this.$router.push('/admin/edit/' + id)
+      this.$store.dispatch('setCurrentTask', id)
+      console.log('edit:', id)
+    },
+    remove(id) {
+      confirm('Are you sure ?')
+      this.$store.dispatch('deleteTask', id)
+    },
+    convertToName(id) {
+      const filer = this.users.filter(x => x.id === id)
+      const user = filer.find(x => x.id === id)
+      return user.name + ' (' + user.email + ')'
     }
   },
-  beforeMount() {
-    this.getTasks()
+  async beforeCreate() {
+    await this.$store.dispatch('getTasks')
+  },
+  computed: {
+    errors() {
+      return this.$store.getters.getErrors
+    },
+    tasks() {
+      return this.$store.getters.getAllTasks
+    },
+    users() {
+      return this.$store.getters.getAllUsers
+    }
   }
 }
 </script>
