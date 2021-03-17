@@ -18,10 +18,10 @@
           <td>{{ task.status }}</td>
           <td>
             <form @change.prevent="updateStatus(task.id)">
-              <select name="status" id="status" v-model="newStatus">
-                <option value="todo">TODO</option>
-                <option value="progress">IN PROGRESS</option>
-                <option value="done">DONE</option>
+              <select name="status" id="status" v-model="task.status">
+                <option v-if="task.status !== 'todo' && task.status === 'progress'" value="todo">TODO</option>
+                <option v-if="task.status === 'todo' || task.status === 'done'" value="progress">IN PROGRESS</option>
+                <option v-if="task.status === 'progress'" value="done">DONE</option>
               </select>
             </form>
           </td>
