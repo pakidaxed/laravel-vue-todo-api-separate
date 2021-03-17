@@ -19,9 +19,9 @@
         </div>
         <div class="form-control">
           <label for="confirm_password">Confirm Password:</label>
-          <input type="password" name="confirm_password" id="confirm_password" v-model="regData.confirmPassword"/>
+          <input type="password" name="confirm_password" id="confirm_password" v-model="regData.confirm_password"/>
         </div>
-        <span class="error" v-if="error.confirmPassword">{{ error.confirmPassword }}</span>
+        <span class="error" v-if="error.confirm_password">{{ error.confirm_password }}</span>
         <div class="form-control">
           <label for="confirm_password">Role:</label>
           <select name="role" id="role" v-model="regData.role">
@@ -31,7 +31,8 @@
         </div>
         <span class="error" v-if="error.role">{{ error.role }}</span>
         <div class="form-actions">
-          <button>Register</button>
+          <div class="loading" v-if="loading"><img src="../../assets/loading.gif" alt="loading"/></div>
+          <button v-else>Register</button>
           <router-link to="/">Login</router-link>
         </div>
       </form>
@@ -44,56 +45,35 @@ export default {
   name: "RegistrationForm",
   data() {
     return {
+      loading: false,
       regData: {
         name: null,
         email: null,
         password: null,
-        confirmPassword: null,
+        confirm_password: null,
         role: 'ROLE_USER'
       },
       error: {
         name: null,
         email: null,
         password: null,
-        confirmPassword: null,
+        confirm_password: null,
         role: null
       }
     }
   },
   methods: {
     register() {
+      this.loading = true
       this.$store.dispatch('registration', this.regData)
-    }
-    // register() {
-    //   axios
-    //       .post('http://localhost:8000/api/registration', {
-    //         "name": this.regData.name,
-    //         "email": this.regData.email,
-    //         "password": this.regData.password,
-    //         "confirm_password": this.regData.confirmPassword,
-    //         "role": this.regData.role
-    //       })
-    //
-    //       .then(response => {
-    //         if (!response.data.success) {
-    //           this.error.name = response.data.name ?? null
-    //           this.error.email = response.data.email ?? null
-    //           this.error.password = response.data.password ?? null
-    //           this.error.confirmPassword = response.data.confirm_password ?? null
-    //           this.error.role = response.data.role ?? null
-    //         } else {
-    //           this.$router.push('/');
-    //         }
-    //       })
-    //       .catch(error => {
-    //         console.log('ERROR CATCH')
-    //         console.log(error)
-    //       })
-    //
-    //
-    // }
-  }
-
+      setTimeout(() => {
+        if (this.$store.getters.getErrors) {
+          this.error = this.$store.getters.getErrors
+          this.loading = false
+        }
+      }, 400)
+    },
+  },
 }
 </script>
 

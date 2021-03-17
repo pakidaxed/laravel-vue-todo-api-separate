@@ -13,7 +13,8 @@
         </div>
         <span class="error" v-if="error.password">{{ error.password }}</span>
         <div class="form-actions">
-          <button>Login</button>
+          <div class="loading" v-if="loading"><img src="../../assets/loading.gif" alt="loading"/></div>
+          <button v-else>Login</button>
           <router-link to="/registration">Registration</router-link>
         </div>
       </form>
@@ -30,6 +31,7 @@ export default {
   name: "LoginForm",
   data() {
     return {
+      loading: false,
       loginData: {
         email: null,
         password: null
@@ -43,33 +45,17 @@ export default {
   },
   methods: {
     login() {
+      this.loading = true
       this.$store.dispatch('login', this.loginData)
-    }
-    //   axios
-    //       .post('http://localhost:8000/api/login', {
-    //         "email": this.loginData.email,
-    //         "password": this.loginData.password
-    //       })
-    //
-    //       .then(response => {
-    //         if (!response.data.success) {
-    //           this.error.email = response.data.email ?? null
-    //           this.error.password = response.data.password ?? null
-    //         } else {
-    //           this.$store.commit('setAuthentication', {state: true})
-    //           this.$store.commit('setCurrentUser', response.data.user)
-    //           this.$store.commit('setAllTasks', response.data.tasks)
-    //           if (response.data.admin === true) {
-    //             this.$store.commit('setAdminStatus', {state: true})
-    //             this.$router.push('/admin')
-    //             return
-    //           }
-    //           this.$router.push('/tasks');
-    //         }
-    //       })
-    //       .catch(() => this.error.main = 'Login failed')
-    // }
-  },
+      setTimeout(() => {
+        if (this.$store.getters.getErrors) {
+          this.error.main = 'Login failed'
+          this.error = this.$store.getters.getErrors
+          this.loading = false
+        }
+      }, 400)
+    },
+  }
 }
 </script>
 

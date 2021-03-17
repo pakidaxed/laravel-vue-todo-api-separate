@@ -8,6 +8,7 @@ export default createStore({
         isAdmin: false,
         currentUser: null,
         allTasks: null,
+        errors: null
     },
     getters: {
         getAuthenticated(state) {
@@ -21,6 +22,9 @@ export default createStore({
         },
         getAllTasks(state) {
             return state.allTasks
+        },
+        getErrors(state) {
+            return state.errors
         }
     },
     mutations: {
@@ -44,23 +48,40 @@ export default createStore({
             state.isAdmin = false
             state.currentUser = null
             state.allTasks = null
+            state.errors = null
+        },
+        setErrors(state, errors) {
+            state.errors = errors
         }
     },
     actions: {
-        registration(regData) {
+        registration({commit}, regData) {
             axios
                 .post('http://localhost:8000/api/registration', regData)
-                .then(response => console.log(response))
+                .then(response => {
+                    if (response.data.success) {
+                        commit('resetUserData')
+                        router.push('/')
+                    } else {
+                        commit('setErrors', response.data)
+                    }
+                })
+                .catch(error => console.log(error))
         },
         login({commit}, loginData) {
             axios
                 .post('http://localhost:8000/api/login', loginData)
                 .then(response => {
-                    if (response.status === 200) {
-                        console.log(response)
-                        commit('setAuthentication', response.data.role === 'ROLE_ADMIN')
-                        commit('setCurrentUser', response.data)
+                    if (response.data.success) {
+                        commit('setAuthentication', response.data.user.role === 'ROLE_ADMIN')
+                        commit('setCurrentUser', response.data.user)
+                    } else {
+                        console.log(response.data)
+                        commit('setErrors', response.data)
                     }
+                })
+                .catch(error => {
+                    commit('setErrors', error.response.data)
                 })
         },
         isAlive({commit}) {
@@ -75,7 +96,7 @@ export default createStore({
 
                     }
                 }).catch(error => {
-                    console.log(error)
+                console.log(error)
                 if (error.request.status === 511) {
                     commit('resetUserData')
                     console.clear()

@@ -59,4 +59,9 @@ th, tr, td {
   padding: 15px 5px;
 }
 
+.loading img {
+  width: 50px;
+  height: 50px;
+}
+
 </style>

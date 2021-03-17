@@ -37,10 +37,10 @@ class UserController extends Controller
         if ($validator->fails()) return $validator->errors();
 
         if (Auth::attempt($credentials)) {
-           return $this->isAlive();
+            return ['success' => true, 'user' => $this->isAlive()];
         }
 
-        return new Response('Login failed', 401);
+        return ['success' => false, 'main' => 'Login failed'];
 
     }
 
