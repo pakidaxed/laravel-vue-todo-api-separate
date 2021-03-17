@@ -1,12 +1,13 @@
 <template>
-<h1>TODO APP</h1>
+<mini-header></mini-header>
   <login-form></login-form>
 </template>
 
 <script>
 import LoginForm from "@/components/auth/LoginForm";
+import MiniHeader from "@/components/templates/MiniHeader";
 export default {
-  components: {LoginForm}
+  components: {MiniHeader, LoginForm}
 }
 </script>
 

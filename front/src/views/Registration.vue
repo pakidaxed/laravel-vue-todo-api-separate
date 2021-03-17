@@ -1,13 +1,14 @@
 <template>
-  <h1>Registration page</h1>
+  <mini-header></mini-header>
   <registration-form></registration-form>
 </template>
 
 <script>
 import RegistrationForm from "@/components/auth/RegistrationForm";
+import MiniHeader from "@/components/templates/MiniHeader";
 
 export default {
-  components: {RegistrationForm}
+  components: {MiniHeader, RegistrationForm}
 }
 </script>
 
