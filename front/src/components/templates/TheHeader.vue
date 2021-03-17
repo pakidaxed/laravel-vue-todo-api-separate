@@ -9,7 +9,6 @@
         <router-link v-if="isAdmin" to="/admin">All Tasks</router-link>
         <router-link v-if="isAdmin" to="/admin/users">Users</router-link>
         <router-link to="/logout">Logout</router-link>
-
       </nav>
     </div>
   </div>

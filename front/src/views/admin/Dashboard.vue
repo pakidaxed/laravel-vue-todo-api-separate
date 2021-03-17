@@ -40,9 +40,6 @@ import TheHeader from "@/components/templates/TheHeader";
 
 export default {
   components: {TheHeader},
-  data() {
-    return {}
-  },
   methods: {
     getSortedList(sort = '') {
       this.$store.dispatch('getTasks', sort)
@@ -50,7 +47,6 @@ export default {
     edit(id) {
       this.$router.push('/admin/edit/' + id)
       this.$store.dispatch('setCurrentTask', id)
-      console.log('edit:', id)
     },
     remove(id) {
       confirm('Are you sure ?')

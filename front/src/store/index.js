@@ -84,14 +84,12 @@ export default createStore({
                         commit('setErrors', response.data)
                     }
                 })
-                .catch(error => console.log(error))
         },
         async deleteUser({commit, dispatch}, id) {
             await axios
                 .delete('http://localhost:8000/api/users/delete/' + id)
                 .then(response => {
                     if (response.data.success) {
-                        console.error('deleted')
                         commit('setAllTasks')
                         dispatch('getTasks')
                     }
@@ -106,12 +104,8 @@ export default createStore({
                         commit('setCurrentUser', response.data.user)
                         commit('resetErrors')
                     } else {
-                        console.log(response.data)
                         commit('setErrors', response.data)
                     }
-                })
-                .catch(error => {
-                    commit('setErrors', error.response.data)
                 })
         },
         async isAlive({commit}) {
@@ -121,36 +115,25 @@ export default createStore({
                     if (response.status === 200) {
                         commit('setAuthentication', response.data.role === 'ROLE_ADMIN')
                         commit('setCurrentUser', response.data)
-                        console.log('still alive')
-
-
                     }
                 }).catch(error => {
-                    console.log(error)
                     if (error.request.status === 511) {
                         commit('resetUserData')
                         console.clear()
-                        console.log('dead')
                     }
                 })
         },
         async logout({commit}) {
             await axios
                 .get('http://localhost:8000/api/logout')
-                .then(response => {
-                    console.log(response)
+                .then(() => {
                     commit('resetUserData')
-                    console.log('logout')
                 })
-
-
         },
         async getTasks({commit}, sort = '') {
-            console.log('SORTAS: ' + sort)
             await axios
                 .get('http://localhost:8000/api/tasks/' + sort)
                 .then(response => {
-                    console.log(response.data)
                     commit('setAllTasks', response.data.tasks)
                     if (response.data.users) {
                         commit('setAllUsers', response.data.users)
@@ -169,10 +152,8 @@ export default createStore({
                         router.push('/admin')
                     }
                 })
-                .catch(error => console.log(error))
         },
         async updateTask({dispatch, commit}, task) {
-            console.error(task)
             await axios
                 .put('http://localhost:8000/api/tasks/update/' + task.id, task)
                 .then(response => {
@@ -183,7 +164,7 @@ export default createStore({
                         commit('resetErrors')
                         router.push('/admin')
                     }
-                }).catch(error => console.log(error))
+                })
         },
         async deleteTask({dispatch}, id) {
             await axios
@@ -196,7 +177,6 @@ export default createStore({
                 .then(response => {
                     if(!response.data.success) {
                         commit('setErrors', response.data)
-                        console.log(response.data)
                     } else {
                         dispatch('getTasks')
                         commit('resetErrors')

@@ -6,9 +6,8 @@
 
 <script>
 export default {
-
   beforeMount() {
-    this.$router.push('/')
+    setTimeout(() => this.$router.push('/'), 1000)
   }
 }
 </script>
