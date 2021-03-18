@@ -27,7 +27,6 @@ Route::middleware(['auth', 'admin'])->delete('tasks/delete/{id}', [TaskControlle
 Route::middleware(['auth', 'admin'])->put('tasks/update/{id}', [TaskController::class, 'update']);
 Route::middleware('auth')->put('tasks/progress/{id}', [TaskController::class, 'updateStatus']);
 
-Route::middleware('auth')->get('admin/dashboard', [TaskController::class, 'show']);
 Route::middleware('auth')->get('admin/users', [TaskController::class, 'users']);
 Route::middleware(['auth', 'admin'])->delete('users/delete/{id}', [UserController::class, 'delete']);
 

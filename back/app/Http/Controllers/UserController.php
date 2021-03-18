@@ -97,6 +97,9 @@ class UserController extends Controller
         return ['success' => $result];
     }
 
+    /**
+     * Checking if user is still online, and logging in front end automatically
+     */
     public function isAlive()
     {
         return Auth::check() ? $this->user->getCurrentUser() : new Response('', 511);

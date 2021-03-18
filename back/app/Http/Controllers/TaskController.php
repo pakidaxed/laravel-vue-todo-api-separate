@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
@@ -26,7 +25,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Returning all the needed information about task to front. If user is admin, returning also all users information
      *
      * @param string $sort
      * @return Task[]|Collection|Response
@@ -48,6 +47,7 @@ class TaskController extends Controller
                     ->get()
             ];
         } else {
+
             return ['tasks' => $this->task->select('id', 'name', 'status')->where('owner_id', Auth::id())->get()];
         }
     }
@@ -83,44 +83,10 @@ class TaskController extends Controller
         return ['success' => true];
     }
 
-    public function delete($id)
-    {
-        $task = Task::where('id', $id)->first();
-        $result = $task->delete();
-
-        return ['success' => $result];
-    }
-
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return string[]
+     * Updating the task from admin section
      */
-    public function store(Request $request): array
-    {
-        return ['store' => 'ok'];
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return string
-     */
-    public function show()
-    {
-        if (User::where('id', Auth::id()) === 'jucius.tomas@gmail.com') return 'pipopu';
-        return Task::where('owner_id', Auth::id())->get();
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param $id
-     * @return string[]
-     */
-    public function update(Request $request, $id)
+    public function update($id)
     {
         $taskData = $this->request->only('name', 'owner_id', 'status');
 
@@ -153,7 +119,10 @@ class TaskController extends Controller
         return ['success' => true];
     }
 
-    public function updateStatus(Request $request, $id)
+    /**
+     * Updating task status by simple user
+     */
+    public function updateStatus($id)
     {
 
         $taskData = $this->request->only('status');
@@ -190,15 +159,12 @@ class TaskController extends Controller
         return ['success' => true];
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Task $task
-     * @return string[]
-     */
-    public function destroy(Task $task): array
+    public function delete($id)
     {
-        return ['destroy' => 'ok'];
+        $task = Task::where('id', $id)->first();
+        $result = $task->delete();
+
+        return ['success' => $result];
     }
+
 }
